@@ -1,4 +1,4 @@
-git{
+{
     "bitwise": true,
     "camelcase": true,
     "curly": true,
