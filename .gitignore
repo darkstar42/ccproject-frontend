@@ -1,0 +1,28 @@
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# jscoverage / JSCover
+lib-cov
+
+# istanbul
+coverage
+
+# Compiled binary addons
+build/Release
+
+# Depenency directories
+node_modules
+bower_components
+
+# Build files
+build
+templates.js
+
+# IDE
+.idea
