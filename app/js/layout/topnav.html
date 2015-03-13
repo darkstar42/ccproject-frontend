@@ -1,11 +1,11 @@
-<nav class="navbar navbar-fixed-top navbar-inverse">
+<nav class="navbar navbar-fixed-top navbar-inverse" data-ng-controller="TopNav as vm">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" ui-sref="home">Cloud Project</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="dropdown" ng-show="isAuthenticated()">
+                <li class="dropdown" ng-show="vm.isAuthenticated()">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li class="dropdown-header">Folder</li>
@@ -17,7 +17,7 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown" ng-show="isAuthenticated()">
+                <li class="dropdown" ng-show="vm.isAuthenticated()">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a ui-sref="logout">Logout</a></li>
