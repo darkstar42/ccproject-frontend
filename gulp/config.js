@@ -45,6 +45,8 @@ module.exports = {
             'node_modules/angular-route/angular-route.min.js',
             'node_modules/angular-animate/angular-animate.min.js',
             'node_modules/angular-sanitize/angular-sanitize.min.js',
+            'node_modules/angular-jwt/dist/angular-jwt.min.js',
+            'node_modules/angular-local-storage/dist/angular-local-storage.min.js',
             'node_modules/jquery/dist/jquery.min.js',
             'node_modules/bootstrap/dist/js/bootstrap.min.js',
             'node_modules/angular-bootstrap/dist/ui-bootstrap.min.js',

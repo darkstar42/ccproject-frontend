@@ -51,7 +51,8 @@
         events: events,
         imageSettings: imageSettings,
         keyCodes: keyCodes,
-        version: '0.0.1'
+        version: '0.0.1',
+        apiBaseUrl: 'http://localhost:1337/'
     };
 
     core.constant('config', config);
@@ -63,15 +64,23 @@
         '$routeProvider',
         'exceptionConfigProvider',
         'routehelperConfigProvider',
+        'authServiceConfigProvider',
         'toastr'
     ];
 
     /* @ngInject */
-    function configure($logProvider, $routeProvider, exceptionConfigProvider, routehelperConfigProvider, toastr) {
+    function configure(
+        $logProvider, $routeProvider, exceptionConfigProvider,
+        routehelperConfigProvider, authServiceConfigProvider, toastr) {
         configureToastr();
         configureLogging();
         configureExceptions();
         configureRouting();
+        configureAuth();
+
+        function configureAuth() {
+            authServiceConfigProvider.config.apiUrl = 'foo';
+        }
 
         function configureToastr() {
             toastr.options.timeOut = 4000;

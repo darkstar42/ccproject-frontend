@@ -6,10 +6,10 @@
         .controller('Sidebar', Sidebar);
 
     Sidebar.$inject = [
-        '$location', '$route', 'config', 'routehelper'
+        '$location', '$route', 'config', 'routehelper', 'authService'
     ];
 
-    function Sidebar($location, $route, config, routehelper) {
+    function Sidebar($location, $route, config, routehelper, authService) {
         /*jshint validthis: true */
         var vm = this;
 

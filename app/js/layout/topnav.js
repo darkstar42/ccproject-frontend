@@ -6,22 +6,18 @@
         .controller('TopNav', TopNav);
 
     TopNav.$inject = [
-        '$location', '$route', 'config', 'routehelper'
+        'authService'
     ];
 
-    function TopNav($location, $route, config, routehelper) {
+    function TopNav(authService) {
         /*jshint validthis: true */
         var vm = this;
 
-        vm.isAuthenticated = isAuthenticated;
+        vm.isAuthenticated = authService.isAuthenticated;
 
         activate();
 
         function activate() {
-        }
-
-        function isAuthenticated() {
-            return true;
         }
     }
 })();
