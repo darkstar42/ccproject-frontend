@@ -20,6 +20,11 @@
                 config: this.config
             };
         };
+
+        init();
+
+        function init() {
+        }
     }
 
     authService.$inject = [
@@ -30,12 +35,13 @@
         'USER_ROLES',
         'localStorageService',
         'jwtHelper',
+        'jwtInterceptor',
         'authServiceConfig'
     ];
 
     function authService(
         $http, config, common, AUTH_EVENTS, USER_ROLES,
-        localStorageService, jwtHelper, authServiceConfig) {
+        localStorageService, jwtHelper, jwtInterceptor, authServiceConfig) {
 
         var currentUser = null;
         var tokenIdentifier = 'JWTAuthToken';
@@ -67,6 +73,25 @@
                     currentUser = parseJWTToken(authToken);
                 }
             }
+
+            angular
+                .module('blocks.auth')
+                .config(function(jwtInterceptorProvider) {
+                    jwtInterceptorProvider.tokenGetter = ['localStorageService', function(localStorageService) {
+                        return localStorageService.get(tokenIdentifier);
+                    }];
+                })
+                .config(function($httpProvider) {
+                    $httpProvider.interceptors.push(
+                        'jwtInterceptor',
+                        [
+                            '$injector',
+                            function($injector) {
+                                return $injector.get('AuthInterceptor');
+                            }
+                        ]
+                    )
+                });
         }
 
         function register(credentials, success, error) {
