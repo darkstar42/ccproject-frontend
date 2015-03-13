@@ -9,7 +9,7 @@ var gulpif = require('gulp-if');
 var autoprefixer = require('gulp-autoprefixer');
 var plug = require('gulp-load-plugins')();
 
-gulp.task('css', [ 'vendorcss' ], function() {
+gulp.task('css', function() {
     return gulp
         .src(config.css.src)
         .pipe(sass({
@@ -18,8 +18,9 @@ gulp.task('css', [ 'vendorcss' ], function() {
             outputStyle: global.isProd ? 'compressed' : 'nested'
         }))
         .pipe(autoprefixer("last 2 versions", "> 1%", "ie 8"))
-        .on('error', handleErrors)
+        .pipe(plug.concat(config.css.bundleName))
         .pipe(gulp.dest(config.css.dest))
+        .on('error', handleErrors)
         .pipe(gulpif(browserSync.active, browserSync.reload({ stream: true })));
 });
 

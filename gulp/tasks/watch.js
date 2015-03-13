@@ -7,10 +7,10 @@ var plug = require('gulp-load-plugins')();
 var log = plug.util.log;
 
 gulp.task('watch', [ 'browserSync', 'server' ], function() {
-    gulp.watch(config.scripts.src, [ 'js', 'vendorjs' ]);
-    gulp.watch(config.styles.src, [ 'styles' ]);
-    gulp.watch(config.images.src, [ 'images' ]);
-    gulp.watch(config.views.watch, [ 'views' ]);
+    gulp.watch(config.scripts.src, [ 'js' ], logWatch);
+    gulp.watch(config.css.src, [ 'css' ], logWatch);
+    gulp.watch(config.images.src, [ 'images' ], logWatch);
+    gulp.watch(config.views.watch, [ 'views' ], logWatch);
 
     function logWatch(event) {
         log('*** File ' + event.path + ' was ' + event.type + ', running tasks...');

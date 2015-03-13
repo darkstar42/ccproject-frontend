@@ -8,5 +8,5 @@ gulp.task('dev', [ 'clean' ], function(callback) {
 
     global.isProd = false;
 
-    runSequence([ 'styles', 'images', 'views', 'js' ], 'watch', callback);
+    runSequence([ 'vendorcss', 'css', 'images', 'views', 'vendorjs', 'js' ], 'watch', callback);
 });

@@ -8,8 +8,8 @@ var plug = require('gulp-load-plugins')();
 
 gulp.task('analyze', function() {
     var jshintTests = analyzejshint([].concat('test/**/*.spec.js'), 'test/.jshintrc');
-    var jshint = analyzejshint([].concat(config.js.src, '!app/js/templates.js', '!test/**/*.spec.js'), '.jshintrc');
-    var jscs = analyzejscs([].concat(config.js.src));
+    var jshint = analyzejshint([].concat(config.js.src, '!app/js/templates.js', '!test/**/*.spec.js', '!app/js/lib/*.js'), '.jshintrc');
+    var jscs = analyzejscs([].concat(config.js.src, '!app/js/templates.js', '!app/js/lib/*.js'));
 
     return merge(jshintTests, jshint, jscs);
 });

@@ -13,9 +13,9 @@ module.exports = {
     'views': {
         'watch': [
             'app/index.html',
-            'app/views/**/*.html'
+            'app/js/**/*.html'
         ],
-        'src': 'app/views/**/*.html',
+        'src': 'app/js/**/*.html',
         'dest': 'app/js'
     },
     'gzip': {
@@ -41,20 +41,29 @@ module.exports = {
     },
     'vendorjs': {
         'src': [
-            'node_modules/angular/angular.min.js',
-            'node_modules/angular-bootstrap/dist/ui-bootstrap.min.js'
+            'node_modules/angular/angular.js',
+            'node_modules/angular-route/angular-route.min.js',
+            'node_modules/angular-animate/angular-animate.min.js',
+            'node_modules/angular-sanitize/angular-sanitize.min.js',
+            'node_modules/jquery/dist/jquery.min.js',
+            'node_modules/bootstrap/dist/js/bootstrap.min.js',
+            'node_modules/angular-bootstrap/dist/ui-bootstrap.min.js',
+            'node_modules/moment/min/moment.min.js',
+            'node_modules/toastr/toastr.min.js'
         ],
         'dest': 'build/js/',
         'bundleName': 'vendor.js'
     },
     'css': {
-        'src': 'app/styles/**/*.scss',
+        'src': 'app/css/*.scss',
         'dest': 'build/css/',
-        'bundleName': 'ccfontend.css'
+        'bundleName': 'ccfrontend.css'
     },
     'vendorcss': {
         'src': [
-
+            'node_modules/bootstrap/dist/css/bootstrap.min.css',
+            'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
+            'node_modules/toastr/toastr.min.css'
         ],
         'dest': 'build/css/',
         'bundleName': 'vendor.css'

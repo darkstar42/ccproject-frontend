@@ -14,7 +14,9 @@ gulp.task('views', function() {
     return gulp
         .src(config.views.src)
         .pipe(templateCache({
-            standalone: true
+            module: 'ccfrontend.templates',
+            standalone: true,
+            root: 'app/'
         }))
         .pipe(gulp.dest(config.views.dest));
 });
