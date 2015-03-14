@@ -16,6 +16,7 @@
         vm.busyMessage = 'Please wait ...';
         vm.isBusy = true;
         vm.showSplash = false;
+        vm.isAuthenticated = authService.isAuthenticated;
 
         activate();
 

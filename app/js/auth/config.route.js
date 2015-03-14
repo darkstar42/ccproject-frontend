@@ -29,7 +29,10 @@
                     config: {
                         url: '/logout',
                         controller: 'Logout as vm',
+                        title: 'Logout',
                         settings: {
+                            nav: 99,
+                            content: '<i class="fa fa-dashboard"></i> Logout',
                             authorizedRoles: [USER_ROLES.admin, USER_ROLES.user]
                         }
                     }

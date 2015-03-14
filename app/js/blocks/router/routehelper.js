@@ -108,21 +108,19 @@
 
         function getRoutes() {
             var states = $state.get();
-            /*
-            for (var prop in $state.get()) {
-                if ($route.routes.hasOwnProperty(prop)) {
-                    var route = $route.routes[prop];
-                    var isRoute = !!route.title;
+            var routes = [];
 
-                    if (isRoute) {
-                        routes.push(route);
-                    }
+            for (var idx = 0; idx < states.length; idx++) {
+                var state = states[idx];
+
+                var isRoute = !!state.title;
+
+                if (isRoute) {
+                    routes.push(state);
                 }
             }
 
             return routes;
-            */
-            return [];
         }
 
         function updateDocTitle() {

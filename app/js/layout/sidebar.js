@@ -6,10 +6,10 @@
         .controller('Sidebar', Sidebar);
 
     Sidebar.$inject = [
-        '$route', 'routehelper', 'authService'
+        '$state', 'routehelper', 'authService'
     ];
 
-    function Sidebar($route, routehelper, authService) {
+    function Sidebar($state, routehelper, authService) {
         /*jshint validthis: true */
         var vm = this;
 
@@ -32,11 +32,12 @@
         }
 
         function isCurrent(route) {
-            if (!route.title || !$route.current || !$route.current.title) {
+            if (!route.title || !$state.current || !$state.current.title) {
                 return '';
             }
+
             var menuName = route.title;
-            return $route.current.title.substr(0, menuName.length) === menuName ? 'current' : '';
+            return $state.current.title.substr(0, menuName.length) === menuName ? 'active' : '';
         }
     }
 })();
