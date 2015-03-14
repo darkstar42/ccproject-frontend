@@ -9,12 +9,25 @@
     // Must configure via the routehelperConfigProvider
     function routehelperConfig() {
         /* jshint validthis:true */
+        var self = this;
+
+        /* jshint validthis:true */
         this.config = {
             // These are the properties we need to set
             // $routeProvider: undefined
             // docTitle: ''
             // resolveAlways: { ready: function() {} }
         };
+
+        angular
+            .module('ccfrontend.core')
+            .config(function($locationProvider, $stateProvider, $urlRouterProvider) {
+                $locationProvider.html5Mode(true);
+                $urlRouterProvider.otherwise('/');
+
+                self.config.stateProvider = $stateProvider;
+                self.config.urlRouterProvider = $urlRouterProvider;
+            });
 
         this.$get = function() {
             return {
@@ -24,21 +37,23 @@
     }
 
     routehelper.$inject = [
+        'common',
         '$location',
+        '$state',
         '$rootScope',
-        '$route',
         'logger',
         'routehelperConfig'
     ];
 
-    function routehelper($location, $rootScope, $route, logger, routehelperConfig) {
+    function routehelper(common, $location, $state, $rootScope, logger, routehelperConfig) {
         var handlingRouteChangeError = false;
         var routeCounts = {
             errors: 0,
             changes: 0
         };
         var routes = [];
-        var $routeProvider = routehelperConfig.config.$routeProvider;
+        var stateProvider = routehelperConfig.config.stateProvider;
+        var urlRouterProvider = routehelperConfig.config.urlRouterProvider;
 
         var service = {
             configureRoutes: configureRoutes,
@@ -52,14 +67,17 @@
 
         function configureRoutes(routes) {
             routes.forEach(function(route) {
+                /*
                 route.config.resolve = angular.extend(
                     route.config.resolve || {},
                     routehelperConfig.config.resolveAlways
                 );
-                $routeProvider.when(route.url, route.config);
+                */
+
+                stateProvider.state(route.name, route.config);
             });
 
-            $routeProvider.otherwise({redirectTo: '/'});
+            urlRouterProvider.otherwise('/');
         }
 
         function handleRoutingErrors() {
@@ -89,7 +107,9 @@
         }
 
         function getRoutes() {
-            for (var prop in $route.routes) {
+            var states = $state.get();
+            /*
+            for (var prop in $state.get()) {
                 if ($route.routes.hasOwnProperty(prop)) {
                     var route = $route.routes[prop];
                     var isRoute = !!route.title;
@@ -101,15 +121,19 @@
             }
 
             return routes;
+            */
+            return [];
         }
 
         function updateDocTitle() {
-            $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
+            common.$on('$stateChangeSuccess', function(event, toState) {
+                var stateTitle = toState.title;
+                var docTitle = routehelperConfig.config.docTitle;
+
                 routeCounts.changes++;
                 handlingRouteChangeError = false;
-                var title = routehelperConfig.config.docTitle + ' ' + (current.title || '');
 
-                $rootScope.title = title;
+                $rootScope.title = docTitle + ' ' + (stateTitle || '');
             });
         }
     }

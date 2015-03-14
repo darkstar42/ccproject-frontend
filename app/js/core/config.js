@@ -61,7 +61,6 @@
 
     configure.$inject = [
         '$logProvider',
-        '$routeProvider',
         'exceptionConfigProvider',
         'routehelperConfigProvider',
         'authServiceConfigProvider',
@@ -70,7 +69,7 @@
 
     /* @ngInject */
     function configure(
-        $logProvider, $routeProvider, exceptionConfigProvider,
+        $logProvider, exceptionConfigProvider,
         routehelperConfigProvider, authServiceConfigProvider, toastr) {
         configureToastr();
         configureLogging();
@@ -101,7 +100,7 @@
         function configureRouting() {
             var routeConfig = routehelperConfigProvider;
 
-            routeConfig.config.$routeProvider = $routeProvider;
+            //routeConfig.config.$routeProvider = $routeProvider;
             routeConfig.config.docTitle = 'CC: ';
         }
     }

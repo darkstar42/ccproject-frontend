@@ -6,6 +6,8 @@
         .provider('authServiceConfig', authServiceConfig)
         .factory('authService', authService);
 
+    var tokenIdentifier = 'JWTAuthToken';
+
     function authServiceConfig() {
         /* jshint validthis:true */
         this.config = {
@@ -24,6 +26,29 @@
         init();
 
         function init() {
+            angular
+                .module('blocks.auth')
+                .config(function(localStorageServiceProvider) {
+                    localStorageServiceProvider
+                        .setPrefix('ccfrontend')
+                        .setStorageType('sessionStorage');
+                })
+                .config(function(jwtInterceptorProvider) {
+                    jwtInterceptorProvider.tokenGetter = ['localStorageService', function(localStorageService) {
+                        return localStorageService.get(tokenIdentifier);
+                    }];
+                })
+                .config(function($httpProvider) {
+                    $httpProvider.interceptors.push(
+                        'jwtInterceptor',
+                        [
+                            '$injector',
+                            function($injector) {
+                                return $injector.get('authInterceptor');
+                            }
+                        ]
+                    );
+                });
         }
     }
 
@@ -34,17 +59,14 @@
         'AUTH_EVENTS',
         'USER_ROLES',
         'localStorageService',
-        'jwtHelper',
-        'jwtInterceptor',
-        'authServiceConfig'
+        'jwtHelper'
     ];
 
     function authService(
         $http, config, common, AUTH_EVENTS, USER_ROLES,
-        localStorageService, jwtHelper, jwtInterceptor, authServiceConfig) {
+        localStorageService, jwtHelper) {
 
         var currentUser = null;
-        var tokenIdentifier = 'JWTAuthToken';
 
         var service = {
             register: register,
@@ -74,24 +96,21 @@
                 }
             }
 
-            angular
-                .module('blocks.auth')
-                .config(function(jwtInterceptorProvider) {
-                    jwtInterceptorProvider.tokenGetter = ['localStorageService', function(localStorageService) {
-                        return localStorageService.get(tokenIdentifier);
-                    }];
-                })
-                .config(function($httpProvider) {
-                    $httpProvider.interceptors.push(
-                        'jwtInterceptor',
-                        [
-                            '$injector',
-                            function($injector) {
-                                return $injector.get('AuthInterceptor');
-                            }
-                        ]
-                    )
-                });
+            common.$on('$stateChangeStart', function(event, toState) {
+                var authorizedRoles = toState.settings.authorizedRoles;
+
+                if (!service.isAuthorized(authorizedRoles)) {
+                    event.preventDefault();
+
+                    if (service.isAuthenticated()) {
+                        // User is not allowed
+                        common.$broadcast(AUTH_EVENTS.notAuthorized);
+                    } else {
+                        // User is not logged in
+                        common.$broadcast(AUTH_EVENTS.notAuthenticated);
+                    }
+                }
+            });
         }
 
         function register(credentials, success, error) {
@@ -100,8 +119,8 @@
                 .success(function(data) {
                     return success();
                 })
-                .error(function(data) {
-                    return error(data);
+                .error(function(data, status) {
+                    return error(status);
                 });
         }
 
@@ -124,10 +143,10 @@
 
                     return success(authInfo);
                 })
-                .error(function(data) {
+                .error(function(data, status) {
                     common.$broadcast(AUTH_EVENTS.loginFailed);
 
-                    return error(data);
+                    return error(status);
                 });
         }
 

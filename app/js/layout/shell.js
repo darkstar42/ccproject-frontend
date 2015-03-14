@@ -5,9 +5,9 @@
         .module('ccfrontend.layout')
         .controller('Shell', Shell);
 
-    Shell.$inject = ['common'];
+    Shell.$inject = ['$scope', 'common', 'authService', 'AUTH_EVENTS', '$state'];
 
-    function Shell(common) {
+    function Shell($scope, common, authService, AUTH_EVENTS, $state) {
         /*jshint validthis: true */
         var vm = this;
 
@@ -20,8 +20,13 @@
         activate();
 
         function activate() {
+            common.$on(AUTH_EVENTS.notAuthorized, handleNotAuthorized);
+            common.$on(AUTH_EVENTS.notAuthenticated, handleNotAuthenticated);
+
             logger.success('CCFrontend loaded!', null);
             hideSplash();
+
+            $state.go('dashboard');
         }
 
         function hideSplash() {
@@ -29,6 +34,14 @@
             common.$timeout(function () {
                 vm.showSplash = false;
             }, 1000);
+        }
+
+        function handleNotAuthorized() {
+            console.dir('not authorized');
+        }
+
+        function handleNotAuthenticated() {
+            $state.go('login');
         }
     }
 })();

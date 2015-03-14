@@ -14,6 +14,7 @@
             $broadcast: $broadcast,
             $q: $q,
             $timeout: $timeout,
+            $on: $on,
 
             // Generic
             isNumber: isNumber,
@@ -25,6 +26,10 @@
 
         function $broadcast() {
             return $rootScope.$broadcast.apply($rootScope, arguments);
+        }
+
+        function $on() {
+            return $rootScope.$on.apply($rootScope, arguments);
         }
 
         function isNumber(val) {

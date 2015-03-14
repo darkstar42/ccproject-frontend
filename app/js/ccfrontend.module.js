@@ -5,6 +5,7 @@
         'ccfrontend.core',
         'ccfrontend.templates',
 
+        'ccfrontend.auth',
         'ccfrontend.dashboard',
         'ccfrontend.layout'
     ]);

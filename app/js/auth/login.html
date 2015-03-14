@@ -1,0 +1,19 @@
+<div data-ng-controller="Login as vm">
+    <form class="form-signin" name="loginForm" ng-submit="vm.submit()" novalidate>
+        <h2 class="form-signin-hading">Login</h2>
+
+        <div class="alert alert-danger" role="alert" ng-show="vm.error">
+            <strong>Error: </strong> <span ng-bind="vm.errorMessage"></span>
+        </div>
+
+        <label for="inputUser" class="sr-only">Username</label>
+        <input type="text" id="inputUser" ng-model="vm.credentials.username" class="form-control" placeholder="Username" required autofocus />
+
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" ng-model="vm.credentials.password" class="form-control" placeholder="Password" required />
+
+        <p>Not registered? <a ui-sref="register">Click here</a></p>
+
+        <button class="btn btn-1g btn-primary btn-block" ng-disabled="vm.submitted" type="submit">Login</button>
+    </form>
+</div>
