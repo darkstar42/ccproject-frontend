@@ -1,0 +1,39 @@
+.files {
+  position: absolute;
+  bottom: 0;
+  top: 50px;
+  right: 0;
+  left: 0;
+}
+
+.files > .header {
+  background-color: #fafafa;
+  height: 50px;
+  line-height: 48px;
+  position: relative;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+.files > .entries {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: block;
+  margin-top: 50px;
+  border-top: 1px solid #eeeeee;
+  background-color: #fafafa;
+  z-index: 999;
+}
+
+.files > .entries > .entry {
+  background-color: #fefefe;
+  height: 45px;
+  border-bottom: 1px solid #eeeeee;
+  line-height: 45px;
+}

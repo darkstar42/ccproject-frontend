@@ -7,6 +7,7 @@
 
         'ccfrontend.auth',
         'ccfrontend.dashboard',
+        'ccfrontend.files',
         'ccfrontend.layout'
     ]);
 })();
