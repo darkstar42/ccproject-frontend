@@ -20,6 +20,18 @@
                         templateUrl: 'app/files/main.html',
                         title: 'Files',
                         settings: {
+
+                            authorizedRoles: [USER_ROLES.admin, USER_ROLES.user]
+                        }
+                    }
+                },
+                {
+                    name: 'files-entryId',
+                    config: {
+                        url: '/files/:entryId',
+                        templateUrl: 'app/files/main.html',
+                        title: 'Files',
+                        settings: {
                             nav: 2,
                             content: '<i class="fa fa-hdd-o"></i> Files',
                             authorizedRoles: [USER_ROLES.admin, USER_ROLES.user]

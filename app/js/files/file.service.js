@@ -69,9 +69,7 @@
                 $http
                     .get(config.apiBaseUrl + '/folders/' + entryId)
                     .success(function(response) {
-                        var folder = new FolderModel(response);
-
-                        folders[entryId] = folder;
+                        var folder = _getFolder(response);
 
                         deferred.resolve(folder);
                     })
@@ -93,8 +91,21 @@
             $http
                 .get(config.apiBaseUrl + '/folders/' + entryId + '/children')
                 .success(function(response) {
-                    // TODO - Create domain objects
-                    deferred.resolve(response);
+                    var children = [];
+                    for (var i = 0; i < response.length; i++) {
+                        var entry = response[i];
+
+                        switch (entry.kind) {
+                            case 'folder':
+                                var folder = _getFolder(entry);
+                                children.push(folder);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    deferred.resolve(children);
                 })
                 .error(function(msg, error) {
                     logger.error('Error while retrieving children for: ' + entryId);
@@ -102,6 +113,20 @@
                 });
 
             return deferred.promise;
+        }
+
+        function _getFolder(data) {
+            var entryId = data.entryId;
+
+            if (typeof folders[entryId] === 'object') {
+                return folders[entryId];
+            } else {
+                var folder = new FolderModel(data);
+
+                folders[entryId] = folder;
+
+                return folder;
+            }
         }
     }
 })();
