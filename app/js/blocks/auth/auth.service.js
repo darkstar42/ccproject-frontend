@@ -120,7 +120,7 @@
                     return success();
                 })
                 .error(function(data, status) {
-                    return error(status);
+                    return error(data || status);
                 });
         }
 
