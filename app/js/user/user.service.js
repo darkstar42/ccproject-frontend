@@ -3,16 +3,16 @@
 
     angular
         .module('ccfrontend.user')
-        .factory('userService', userService);
+        .factory('UserService', UserService);
 
-    userService.$inject = [
+    UserService.$inject = [
         '$http',
         'common',
         'config',
         'UserModel'
     ];
 
-    function userService($http, common, config, UserModel) {
+    function UserService($http, common, config, UserModel) {
         var users = {};
 
         var service = {
