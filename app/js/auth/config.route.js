@@ -32,7 +32,7 @@
                         title: 'Logout',
                         settings: {
                             nav: 99,
-                            content: '<i class="fa fa-dashboard"></i> Logout',
+                            content: '<i class="fa fa-sign-out"></i> Logout',
                             authorizedRoles: [USER_ROLES.admin, USER_ROLES.user]
                         }
                     }

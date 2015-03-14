@@ -21,7 +21,7 @@
                         title: 'Dashboard',
                         settings: {
                             nav: 1,
-                            content: '<i class="fa fa-dashboard"></i> Dashboard',
+                            content: '<i class="fa fa-desktop"></i> Dashboard',
                             authorizedRoles: [USER_ROLES.admin, USER_ROLES.user]
                         }
                     }
