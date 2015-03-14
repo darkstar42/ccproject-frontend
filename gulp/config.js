@@ -65,10 +65,18 @@ module.exports = {
         'src': [
             'node_modules/bootstrap/dist/css/bootstrap.min.css',
             'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
+            'node_modules/font-awesome/css/font-awesome.min.css',
             'node_modules/toastr/toastr.min.css'
         ],
         'dest': 'build/css/',
         'bundleName': 'vendor.css'
+    },
+    'fonts': {
+        'src': [
+            'node_modules/bootstrap/fonts/**/*.*',
+            'node_modules/font-awesome/fonts/**/*.*'
+        ],
+        'dest': 'build/fonts/'
     },
     'test': {
         'karma': 'test/karma.conf.js',
