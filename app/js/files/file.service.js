@@ -10,16 +10,19 @@
         '$upload',
         'common',
         'config',
+        'FileModel',
         'FolderModel',
         'ConfigService'
     ];
 
-    function FileService($http, $upload, common, config, FolderModel, ConfigService) {
+    function FileService($http, $upload, common, config, FileModel, FolderModel, ConfigService) {
         var folders = {};
+        var files = {};
         var children = {};
         var logger = common.logger;
 
         var service = {
+            getFile: getFile,
             getRootFolder: getRootFolder,
             getFolder: getFolder,
             getChildren: getChildren,
@@ -52,6 +55,36 @@
                 logger.error('Root folder could not be loaded');
                 deferred.reject(err);
             }
+        }
+
+        function getFile(entryId) {
+            if (entryId === null) {
+                throw new Error('Unable to get file with invalid entry id');
+            }
+
+            var deferred = common.$q.defer();
+
+            // Check if the file is already available
+            if (typeof files[entryId] === 'object') {
+                logger.info('Get file from cache: ' + entryId);
+
+                var file = files[entryId];
+                deferred.resolve(file);
+            } else {
+                logger.info('Retrieve file: ' + entryId);
+                $http
+                    .get(config.apiBaseUrl + '/files/' + entryId)
+                    .success(function(response) {
+                        var file = _getFile(response);
+
+                        deferred.resolve(file);
+                    })
+                    .error(function(msg, error) {
+                        deferred.reject(msg);
+                    });
+            }
+
+            return deferred.promise;
         }
 
         function getFolder(entryId) {
@@ -111,6 +144,10 @@
                                     var folder = _getFolder(entry);
                                     childEntries.push(folder);
                                     break;
+                                case 'file':
+                                    var file = _getFile(entry);
+                                    childEntries.push(file);
+                                    break;
                                 default:
                                     break;
                             }
@@ -140,6 +177,20 @@
                 folders[entryId] = folder;
 
                 return folder;
+            }
+        }
+
+        function _getFile(data) {
+            var entryId = data.entryId;
+
+            if (typeof files[entryId] === 'object') {
+                return files[entryId];
+            } else {
+                var file = new FileModel(data);
+
+                files[entryId] = file;
+
+                return file;
             }
         }
 
