@@ -15,6 +15,7 @@
 
     function FileService($http, common, config, FolderModel, ConfigService) {
         var folders = {};
+        var children = {};
         var logger = common.logger;
 
         var service = {
@@ -88,29 +89,40 @@
 
             var deferred = common.$q.defer();
 
-            $http
-                .get(config.apiBaseUrl + '/folders/' + entryId + '/children')
-                .success(function(response) {
-                    var children = [];
-                    for (var i = 0; i < response.length; i++) {
-                        var entry = response[i];
+            // Check if the children are already available
+            if (children[entryId] && Object.prototype.toString.call(children[entryId]) == '[object Array]') {
+                logger.info('Get children from cache: ' + entryId);
 
-                        switch (entry.kind) {
-                            case 'folder':
-                                var folder = _getFolder(entry);
-                                children.push(folder);
-                                break;
-                            default:
-                                break;
+                deferred.resolve(children[entryId]);
+            } else {
+                logger.info('Retrieve children for folder: ' + entryId);
+
+                $http
+                    .get(config.apiBaseUrl + '/folders/' + entryId + '/children')
+                    .success(function (response) {
+                        var childEntries = [];
+                        for (var i = 0; i < response.length; i++) {
+                            var entry = response[i];
+
+                            switch (entry.kind) {
+                                case 'folder':
+                                    var folder = _getFolder(entry);
+                                    childEntries.push(folder);
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
-                    }
 
-                    deferred.resolve(children);
-                })
-                .error(function(msg, error) {
-                    logger.error('Error while retrieving children for: ' + entryId);
-                    deferred.reject(msg);
-                });
+                        children[entryId] = childEntries;
+
+                        deferred.resolve(childEntries);
+                    })
+                    .error(function (msg, error) {
+                        logger.error('Error while retrieving children for: ' + entryId);
+                        deferred.reject(msg);
+                    });
+            }
 
             return deferred.promise;
         }
