@@ -2,6 +2,8 @@
     'use strict';
 
     angular.module('ccfrontend.files', [
-        'blocks.config', 'blocks.model', 'blocks.logger'
+        'blocks.config', 'blocks.model', 'blocks.logger',
+
+        'angularFileUpload'
     ]);
 })();

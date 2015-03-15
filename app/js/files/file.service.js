@@ -7,13 +7,14 @@
 
     FileService.$inject = [
         '$http',
+        '$upload',
         'common',
         'config',
         'FolderModel',
         'ConfigService'
     ];
 
-    function FileService($http, common, config, FolderModel, ConfigService) {
+    function FileService($http, $upload, common, config, FolderModel, ConfigService) {
         var folders = {};
         var children = {};
         var logger = common.logger;
@@ -21,7 +22,8 @@
         var service = {
             getRootFolder: getRootFolder,
             getFolder: getFolder,
-            getChildren: getChildren
+            getChildren: getChildren,
+            upload: upload
         };
 
         return service;
@@ -90,7 +92,7 @@
             var deferred = common.$q.defer();
 
             // Check if the children are already available
-            if (children[entryId] && Object.prototype.toString.call(children[entryId]) == '[object Array]') {
+            if (children[entryId] && Object.prototype.toString.call(children[entryId]) === '[object Array]') {
                 logger.info('Get children from cache: ' + entryId);
 
                 deferred.resolve(children[entryId]);
@@ -138,6 +140,25 @@
                 folders[entryId] = folder;
 
                 return folder;
+            }
+        }
+
+        function upload(entryId, files) {
+            if (files && files.length) {
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+
+                    $upload.upload({
+                        url: config.apiBaseUrl + '/upload',
+                        fields: {'folderId': entryId},
+                        file: file
+                    }).progress(function (evt) {
+                        var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                        console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+                    }).success(function (data, status, headers, config) {
+                        console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+                    });
+                }
             }
         }
     }

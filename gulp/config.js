@@ -51,7 +51,8 @@ module.exports = {
             'node_modules/bootstrap/dist/js/bootstrap.min.js',
             'node_modules/angular-bootstrap/dist/ui-bootstrap.min.js',
             'node_modules/moment/min/moment.min.js',
-            'node_modules/toastr/toastr.min.js'
+            'node_modules/toastr/toastr.min.js',
+            'node_modules/ng-file-upload/dist/angular-file-upload-all.min.js'
         ],
         'dest': 'build/js/',
         'bundleName': 'vendor.js'

@@ -5,15 +5,16 @@
         .module('ccfrontend.files')
         .controller('Main', Main);
 
-    Main.$inject = ['common', '$state', '$stateParams', 'FileService'];
+    Main.$inject = ['common', '$state', '$stateParams', 'FileService', '$scope'];
 
-    function Main(common, $state, $stateParams, FileService) {
+    function Main(common, $state, $stateParams, FileService, $scope) {
         /*jshint validthis: true */
         var vm = this;
 
         vm.rootFolder = null;
         vm.currentFolderId = $stateParams.entryId;
         vm.children = [];
+        vm.upload = FileService.upload;
 
         var logger = common.logger;
 
@@ -22,6 +23,10 @@
         function activate() {
             initRootFolder();
             updateChildren();
+
+            $scope.$watch('vm.files', function () {
+                vm.upload(vm.currentFolderId, vm.files);
+            });
         }
 
         function initRootFolder() {
