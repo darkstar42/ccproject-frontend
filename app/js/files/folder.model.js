@@ -15,10 +15,17 @@
         };
 
         model.prototype = Object.create(BaseModel.prototype);
-        model.prototype.constructor = function User(properties) {
+        model.prototype.constructor = function Folder(properties) {
             BaseModel.call(this, properties);
         };
-        model.prototype.accessors = {};
+        model.prototype.accessors = {
+            get_filesize: function() {
+                return 0;
+            },
+            get_icon: function() {
+                return 'fa-folder';
+            }
+        };
 
         return model;
     }

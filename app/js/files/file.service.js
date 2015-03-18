@@ -22,10 +22,14 @@
         var logger = common.logger;
 
         var service = {
+            createFolder: createFolder,
+            deleteFile: deleteFile,
+            deleteFolder: deleteFolder,
             getFile: getFile,
             getRootFolder: getRootFolder,
             getFolder: getFolder,
             getChildren: getChildren,
+            saveFolder: saveFolder,
             upload: upload
         };
 
@@ -55,6 +59,92 @@
                 logger.error('Root folder could not be loaded');
                 deferred.reject(err);
             }
+        }
+
+        function deleteFile(entryId) {
+            if (entryId === null) {
+                throw new Error('Unable to delete a file with invalid entry id');
+            }
+
+            var deferred = common.$q.defer();
+
+            $http
+                .delete(config.apiBaseUrl + '/files/' + entryId)
+                .success(function(response) {
+                    var file = _getFile(response.file);
+                    var parentId = file.get('parentId');
+                    var parentChildren = children[parentId];
+
+                    var index = parentChildren.indexOf(file);
+
+                    if (index !== -1) {
+                        parentChildren.splice(index, 1);
+                    }
+
+                    deferred.resolve(response);
+                })
+                .error(function(msg, error) {
+                    deferred.reject(msg);
+                });
+
+            return deferred.promise;
+        }
+
+        function deleteFolder(entryId) {
+            if (entryId === null) {
+                throw new Error('Unable to delete a folder with invalid entry id');
+            }
+
+            var deferred = common.$q.defer();
+
+            $http
+                .delete(config.apiBaseUrl + '/folders/' + entryId)
+                .success(function(response) {
+                    var folder = _getFolder(response.folder);
+                    var parentId = folder.get('parentId');
+                    var parentChildren = children[parentId];
+
+                    var index = parentChildren.indexOf(folder);
+
+                    if (index !== -1) {
+                        parentChildren.splice(index, 1);
+                    }
+
+                    deferred.resolve(response);
+                })
+                .error(function(msg, error) {
+                    deferred.reject(msg);
+                });
+
+            return deferred.promise;
+        }
+
+        function saveFolder(folder) {
+            if (!folder || folder === null) {
+                throw new Error('Unable to save the given folder');
+            }
+
+            var isNewFolder = folder.get('entryId') === null;
+            var deferred = common.$q.defer();
+
+            $http
+                .post(config.apiBaseUrl + '/folders', {folder: folder.properties})
+                .success(function(response) {
+                    var responseFolder = _getFolder(response.folder);
+                    var parentId = responseFolder.get('parentId');
+                    var parentChildren = children[parentId];
+
+                    if (isNewFolder) {
+                        parentChildren.push(responseFolder);
+                    }
+
+                    deferred.resolve(responseFolder);
+                })
+                .error(function(msg, error) {
+                    deferred.reject(msg);
+                });
+
+            return deferred.promise;
         }
 
         function getFile(entryId) {
@@ -206,11 +296,28 @@
                     }).progress(function (evt) {
                         var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                         console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
-                    }).success(function (data, status, headers, config) {
-                        console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+                    }).success(function (response, status, headers, config) {
+                        var responseFile = _getFolder(response.file);
+                        var parentId = responseFile.get('parentId');
+                        var parentChildren = children[parentId];
+
+                        parentChildren.push(responseFile);
                     });
                 }
             }
+        }
+
+        function createFolder(parentId, title) {
+            var data = {
+                kind: 'folder',
+                entryId: null,
+                parentId: parentId,
+                title: title,
+                createdDate: new Date(),
+                modifiedDate: new Date()
+            };
+
+            return new FolderModel(data);
         }
     }
 })();

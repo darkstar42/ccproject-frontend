@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <h4 class="modal-title">
+        <i class="fa fa-folder"></i>
+        Create Folder
+    </h4>
+</div>
+<div class="modal-body">
+    <ng-form name="folderDialog" novalidate role="form">
+        <div class="form-group input-group-lg" ng-class="{true: 'has-error'}[folderDialog.foldername.$dirty && folderDialog.foldername.$invalid]">
+            <label class="control-label" for="foldername">Name:</label>
+            <input type="text" class="form-control" name="foldername" id="foldername" ng-model="vm.folder.name" ng-keyup="vm.hitEnter($event)" required>
+        </div>
+    </ng-form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="vm.cancel()">Cancel</button>
+    <button type="button" class="btn btn-primary" ng-click="vm.save()" ng-disabled="(folderDialog.$dirty && folderDialog.$invalid) || folderDialog.$pristine">Save</button>
+</div>

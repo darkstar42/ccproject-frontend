@@ -15,10 +15,14 @@
         };
 
         model.prototype = Object.create(BaseModel.prototype);
-        model.prototype.constructor = function User(properties) {
+        model.prototype.constructor = function File(properties) {
             BaseModel.call(this, properties);
         };
-        model.prototype.accessors = {};
+        model.prototype.accessors = {
+            get_icon: function() {
+                return 'fa-file';
+            }
+        };
 
         return model;
     }

@@ -3,6 +3,24 @@
     data-ng-controller="Main as vm"
     ng-file-drop ng-model="vm.files" ng-multiple="true" allow-dir="true"
     >
+    <div class="row actions">
+        <nav class="navbar">
+            <div class="container-fluid">
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li class="dropdown-header">Folder</li>
+                                <li><a ng-click="vm.showCreateFolderModal()">Create folder</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+    </div>
+
     <div class="row header">
         <div class="col-xs-6 col-sm-6" style="padding-left: 30px;">
             Name
@@ -16,15 +34,18 @@
     </div>
 
     <div class="entries">
-        <div class="row entry" ng-repeat="e in vm.children">
+        <div class="row entry" ng-repeat="entry in vm.children | orderBy: 'get(\'title\')'" context-menu="vm.menuOptions">
             <div class="col-xs-6 col-sm-6" style="padding-left: 30px;">
-                <a ui-sref="files-entryId({ entryId: '{{e.get('entryId')}}' })" ng-bind="e.get('title')"></a>
+                <i class="fa {{entry.get('icon')}}"></i>
+
+                <a ng-if="entry.get('kind') === 'folder'" ui-sref="files-entryId({ entryId: '{{entry.get('entryId')}}' })" ng-bind="entry.get('title')"></a>
+                <a ng-if="entry.get('kind') === 'file'" href="{{entry.get('downloadUrl')}}" ng-bind="entry.get('title')"></a>
             </div>
             <div class="col-xs-3 col-sm-3">
-                B
+                {{entry.get('modifiedDate')}}
             </div>
             <div class="col-xs-3 col-sm-3">
-                C
+                {{entry.get('filesize')}}
             </div>
         </div>
     </div>

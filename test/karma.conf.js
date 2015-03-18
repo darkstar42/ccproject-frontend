@@ -5,46 +5,48 @@ var istanbul = require('browserify-istanbul');
 module.exports = function(config) {
     config.set({
         basePath: '../',
-        frameworks: [ 'jasmine', 'browserify' ],
-        preprocessors: {
-            'app/js/**/*.js': [ 'browserify', 'coverage' ]
-        },
-        browsers: [ 'Chrome' ],
-        reporters: [ 'progress', 'coverage' ],
 
-        autoWatch: true,
+        frameworks: [ 'mocha', 'chai', 'sinon', 'chai-sinon' ],
 
-        plugins: [
-            'karma-jasmine',
-            'karma-browserify',
-            'karma-coverage',
-            'karma-chrome-launcher',
-            'karma-firefox-launcher'
+        files: [
+            './app/js/ccfrontend.module.js',
+            './app/js/**/*.module.js',
+            './app/js/**/*.js',
+
+            './test/unit/*.js'
         ],
 
-        browserify: {
-            debug: true,
-            transform: [ 'browserify-shim', istanbul({
-                ignore: [ '**/node_modules/**', '**/test/**' ]
-            })]
-        },
+        exclude: [
+        
+        ],
 
         proxies: {
             '/': 'http://localhost:9876/'
         },
 
-        urlRoot: '/__karma__/',
+        urlRoot: '/_karma_/',
 
-        files: [
-            // 3rd-party resources
-            'node_modules/angular/angular.min.js',
-            'node_modules/angular-mocks/angular-mocks.js',
+        preprocessors: {
+            './app/js/**/*.js': 'coverage'
+        },
 
-            // app-specifc code
-            'app/js/main.js',
+        reporters: [ 'progress' ],
 
-            // test files
-            'test/unit/**/*.js'
-        ]
+        coverageReporter: {
+            type: 'lcov',
+            dir: 'test/coverage'
+        },
+
+        port: 9876,
+
+        colors: true,
+
+        logLevel: config.LOG_INFO,
+
+        autoWatch: true,
+
+        browsers: [ 'PhantomJS' ],
+
+        singleRun: true
     });
 };
