@@ -27,4 +27,6 @@ templates.js
 # IDE
 .idea
 
+# Deployment
 deploy_key
+*.deb
