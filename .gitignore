@@ -28,5 +28,5 @@ templates.js
 .idea
 
 # Deployment
-deploy_key
+.travis/travisci_rsa
 *.deb

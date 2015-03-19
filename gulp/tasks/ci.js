@@ -2,5 +2,5 @@
 
 var gulp = require('gulp');
 
-gulp.task('ci', [ 'prod', 'deploy' ], function() {
+gulp.task('ci', [ 'prod' ], function() {
 });
