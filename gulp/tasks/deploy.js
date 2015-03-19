@@ -10,5 +10,5 @@ gulp.task('deploy', [ 'prod' ], shell.task([
     'cp -pR ' + config.dist.root + '/* /tmp/deploy/opt/ccproject-frontend',
     'rm -f *.deb',
     'fpm -s dir -t deb -C /tmp/deploy --name ccproject-frontend --version 0.0.1 --iteration build-$TRAVIS_BUILD_NUMBER .',
-    'scp -i deploy_key *.deb deployment@puppet.cc.gernox.de:/tmp/'
+    'scp -i deploy_key -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null *.deb deployment@puppet.cc.gernox.de:/tmp/'
 ]));
