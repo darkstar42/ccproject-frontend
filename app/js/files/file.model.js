@@ -19,6 +19,7 @@
             BaseModel.call(this, properties);
         };
         model.prototype.accessors = {
+            /* jshint camelcase: false */
             get_icon: function() {
                 return 'fa-file';
             }

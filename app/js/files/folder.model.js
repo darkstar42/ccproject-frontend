@@ -19,6 +19,7 @@
             BaseModel.call(this, properties);
         };
         model.prototype.accessors = {
+            /* jshint camelcase: false */
             get_filesize: function() {
                 return 0;
             },
