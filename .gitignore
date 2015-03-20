@@ -26,3 +26,7 @@ templates.js
 
 # IDE
 .idea
+
+# Deployment
+.travis/travisci_rsa
+*.deb

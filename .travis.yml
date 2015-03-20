@@ -1,7 +1,18 @@
 language: node_js
 node_js:
- - "0.12"
+- '0.12'
 before_install:
- - npm install -g gulp
+- openssl aes-256-cbc
+  -K $encrypted_0384c7df4890_key
+  -iv $encrypted_0384c7df4890_iv
+  -in .travis/travisci_rsa.enc
+  -out .travis/travisci_rsa
+  -d
+- chmod 0600 .travis/travisci_rsa
+- cp .travis/travisci_rsa ~/.ssh/id_rsa
+- npm install -g gulp
+- gem install fpm
+after_success:
+- ./.travis/deploy.sh
 script:
- - gulp ci
+- gulp ci
