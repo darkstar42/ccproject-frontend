@@ -53,7 +53,8 @@ module.exports = {
             'node_modules/angular-bootstrap/dist/ui-bootstrap-tpls.min.js',
             'node_modules/moment/min/moment.min.js',
             'node_modules/toastr/toastr.min.js',
-            'node_modules/ng-file-upload/dist/angular-file-upload-all.min.js'
+            'node_modules/ng-file-upload/dist/angular-file-upload-all.min.js',
+            'node_modules/videogular/videogular.min.js'
         ],
         'dest': 'build/js/',
         'bundleName': 'vendor.js'
@@ -68,7 +69,8 @@ module.exports = {
             'node_modules/bootstrap/dist/css/bootstrap.min.css',
             'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
             'node_modules/font-awesome/css/font-awesome.min.css',
-            'node_modules/toastr/toastr.min.css'
+            'node_modules/toastr/toastr.min.css',
+            'node_modules/videogular-theme-default/videogular.min.css'
         ],
         'dest': 'build/css/',
         'bundleName': 'vendor.css'
@@ -76,7 +78,8 @@ module.exports = {
     'fonts': {
         'src': [
             'node_modules/bootstrap/fonts/**/*.*',
-            'node_modules/font-awesome/fonts/**/*.*'
+            'node_modules/font-awesome/fonts/**/*.*',
+            'node_modules/videogular-theme-default/fonts/**/*.*'
         ],
         'dest': 'build/fonts/'
     },
