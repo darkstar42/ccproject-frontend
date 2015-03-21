@@ -4,6 +4,7 @@ if [[ $TRAVIS_BRANCH == 'production' ]]; then
     rm -Rf /tmp/deploy
     mkdir -p /tmp/deploy/opt/ccproject-frontend
     cp -pR ./build/* /tmp/deploy/opt/ccproject-frontend
+    cp ./.travis/htaccess /tmp/deploy/opt/ccproject-frontend/.htaccess
     rm -f *.deb
     fpm -s dir -t deb -C /tmp/deploy --name ccproject-frontend --version 0.0.1 --iteration build-$TRAVIS_BUILD_NUMBER .
 

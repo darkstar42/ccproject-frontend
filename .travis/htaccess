@@ -1,0 +1,10 @@
+RewriteEngine on
+
+RewriteBase /
+
+RewriteCond %{REQUEST_URI} !^(\/css) [NC]
+RewriteCond %{REQUEST_URI} !^(\/fonts) [NC]
+RewriteCond %{REQUEST_URI} !^(\/images) [NC]
+RewriteCond %{REQUEST_URI} !^(\/js) [NC]
+
+RewriteRule !(index\.html|\.jpe?g|\.png|\.gif|\.ico|\.js|\.css|\.woff|\.ttf|\.map|\.eof)$ index.html [NC,L]
