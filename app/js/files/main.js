@@ -15,7 +15,12 @@
             ['Select', function ($itemScope) {
             }],
             null,
-            ['Remove', function ($itemScope) {
+            ['Rename', function($itemScope) {
+                var entry = $itemScope.entry;
+
+                showRenameEntryModal(entry);
+            }],
+            ['Remove', function($itemScope) {
                 var entry = $itemScope.entry;
                 var entryId = entry.get('entryId');
                 var kind = entry.get('kind');
@@ -37,6 +42,7 @@
         vm.upload = FileService.upload;
         vm.menuOptions = menuOptions;
         vm.showCreateFolderModal = showCreateFolderModal;
+        vm.showRenameEntryModal = showRenameEntryModal;
 
         var logger = common.logger;
 
@@ -77,7 +83,7 @@
             FileService
                 .deleteFile(entryId)
                 .then(function(response) {
-                    console.dir(response);
+                    logger.success('File sucessfully deleted!', null);
                 });
         }
 
@@ -85,13 +91,11 @@
             FileService
                 .deleteFolder(entryId)
                 .then(function(response) {
-                    console.dir(response);
+                    logger.success('Folder sucessfully deleted!', null);
                 });
         }
 
         function showCreateFolderModal() {
-            console.dir('show');
-
             var dialog = dialogs
                 .create(
                     'app/files/dialogs/createFolder.html',
@@ -111,8 +115,46 @@
                     FileService
                         .saveFolder(folder)
                         .then(function(response) {
-                            //console.dir(response);
+                            logger.success('Folder sucessfully created!', null);
                         });
+                }, function() {
+                    // do nothing
+                });
+        }
+
+        function showRenameEntryModal(entry) {
+            var dialog = dialogs
+                .create(
+                'app/files/dialogs/renameEntry.html',
+                'RenameEntryController as vm',
+                entry,
+                {
+                    size:'sm',
+                    keyboard: true,
+                    backdrop: false
+                }
+            );
+
+            dialog.result
+                .then(function(entry) {
+                    var kind = entry.get('kind');
+
+                    switch (kind) {
+                        case 'file':
+                            FileService
+                                .saveFile(entry)
+                                .then(function(response) {
+                                    logger.success('File sucessfully renamed!', null);
+                                });
+                            break;
+                        case 'folder':
+                            FileService
+                                .saveFolder(entry)
+                                .then(function(response) {
+                                    logger.success('Folder sucessfully renamed!', null);
+                                });
+                            break;
+                    }
                 }, function() {
                     // do nothing
                 });

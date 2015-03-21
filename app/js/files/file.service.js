@@ -29,6 +29,7 @@
             getRootFolder: getRootFolder,
             getFolder: getFolder,
             getChildren: getChildren,
+            saveFile: saveFile,
             saveFolder: saveFolder,
             upload: upload
         };
@@ -136,9 +137,55 @@
 
                     if (isNewFolder) {
                         parentChildren.push(responseFolder);
+                    } else {
+                        for (var i = 0; i < parentChildren.length; i++) {
+                            var child = parentChildren[i];
+                            if (child.get('entryId') === responseFolder.get('entryId')) {
+                                parentChildren.splice(i, 1);
+                                parentChildren.push(new FolderModel(response.folder));
+                                break;
+                            }
+                        }
                     }
 
                     deferred.resolve(responseFolder);
+                })
+                .error(function(msg, error) {
+                    deferred.reject(msg);
+                });
+
+            return deferred.promise;
+        }
+
+        function saveFile(file) {
+            if (!file || file === null) {
+                throw new Error('Unable to save the given file');
+            }
+
+            var isNewFile = file.get('entryId') === null;
+            var deferred = common.$q.defer();
+
+            $http
+                .post(config.apiBaseUrl + '/files', {file: file.properties})
+                .success(function(response) {
+                    var responseFile = _getFile(response.file);
+                    var parentId = responseFile.get('parentId');
+                    var parentChildren = children[parentId];
+
+                    if (isNewFile) {
+                        parentChildren.push(responseFile);
+                    } else {
+                        for (var i = 0; i < parentChildren.length; i++) {
+                            var child = parentChildren[i];
+                            if (child.get('entryId') === responseFile.get('entryId')) {
+                                parentChildren.splice(i, 1);
+                                parentChildren.push(new FileModel(response.file));
+                                break;
+                            }
+                        }
+                    }
+
+                    deferred.resolve(responseFile);
                 })
                 .error(function(msg, error) {
                     deferred.reject(msg);

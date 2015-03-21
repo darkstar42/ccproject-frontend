@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <h4 class="modal-title">
+        <i class="fa fa-folder"></i>
+        Rename Entry
+    </h4>
+</div>
+<div class="modal-body">
+    <ng-form name="renameDialog" novalidate role="form">
+        <div class="form-group input-group-lg" ng-class="{true: 'has-error'}[renameDialog.title.$dirty && renameDialog.title.$invalid]">
+            <label class="control-label" for="title">Name:</label>
+            <input type="text" class="form-control" name="title" id="title" ng-model="vm.entry.properties.title" ng-keyup="vm.hitEnter($event)" required>
+        </div>
+    </ng-form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="vm.cancel()">Cancel</button>
+    <button type="button" class="btn btn-primary" ng-click="vm.save()" ng-disabled="(renameDialog.$dirty && renameDialog.$invalid) || renameDialog.$pristine">Save</button>
+</div>
