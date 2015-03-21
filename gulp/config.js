@@ -69,8 +69,7 @@ module.exports = {
             'node_modules/bootstrap/dist/css/bootstrap.min.css',
             'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
             'node_modules/font-awesome/css/font-awesome.min.css',
-            'node_modules/toastr/toastr.min.css',
-            'node_modules/videogular-theme-default/videogular.min.css'
+            'node_modules/toastr/toastr.min.css'
         ],
         'dest': 'build/css/',
         'bundleName': 'vendor.css'
