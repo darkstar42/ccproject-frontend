@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <h4 class="modal-title">
+        <i class="fa fa-folder"></i>
+        Create Job
+    </h4>
+</div>
+<div class="modal-body">
+    <ng-form name="jobDialog" novalidate role="form">
+        <div class="form-group input-group-lg" ng-class="{true: 'has-error'}[jobDialog.jobImage.$dirty && jobDialog.jobImage.$invalid]">
+            <label class="control-label" for="jobImage">Name:</label>
+            <input type="text" class="form-control" name="jobImage" id="jobImage" ng-model="vm.job.image" ng-keyup="vm.hitEnter($event)" required>
+        </div>
+        <div class="form-group input-group-lg" ng-class="{true: 'has-error'}[jobDialog.jobCmd.$dirty && jobDialog.jobCmd.$invalid]">
+            <label class="control-label" for="jobCmd">Name:</label>
+            <input type="text" class="form-control" name="jobCmd" id="jobCmd" ng-model="vm.job.cmd" ng-keyup="vm.hitEnter($event)" required>
+        </div>
+    </ng-form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="vm.cancel()">Cancel</button>
+    <button type="button" class="btn btn-primary" ng-click="vm.save()" ng-disabled="jobDialog.$dirty && jobDialog.$invalid">Create</button>
+</div>
