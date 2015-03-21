@@ -5,14 +5,17 @@
         .module('ccfrontend.files')
         .controller('Main', Main);
 
-    Main.$inject = ['common', '$state', '$stateParams', 'FileService', 'dialogs', '$scope'];
+    Main.$inject = ['common', '$state', '$stateParams', 'FileService', 'JobService', 'dialogs', '$scope'];
 
-    function Main(common, $state, $stateParams, FileService, dialogs, $scope) {
+    function Main(common, $state, $stateParams, FileService, JobService, dialogs, $scope) {
         /*jshint validthis: true */
         var vm = this;
 
         var menuOptions = [
-            ['Select', function ($itemScope) {
+            ['Create Job', function ($itemScope) {
+                var entry = $itemScope.entry;
+
+                showCreateJobModal(entry);
             }],
             null,
             ['Rename', function($itemScope) {
@@ -43,6 +46,7 @@
         vm.menuOptions = menuOptions;
         vm.showCreateFolderModal = showCreateFolderModal;
         vm.showRenameEntryModal = showRenameEntryModal;
+        vm.showCreateJobModal = showCreateJobModal;
 
         var logger = common.logger;
 
@@ -155,6 +159,34 @@
                                 });
                             break;
                     }
+                }, function() {
+                    // do nothing
+                });
+        }
+
+        function showCreateJobModal(entry) {
+            var dialog = dialogs
+                .create(
+                'app/files/dialogs/createJob.html',
+                'CreateJobController as vm',
+                entry,
+                {
+                    size:'md',
+                    keyboard: true,
+                    backdrop: false
+                }
+            );
+
+            dialog.result
+                .then(function(jobData) {
+                    var job = JobService.createJob(jobData.image, jobData.cmd, jobData.src, jobData.dst);
+
+                    JobService
+                        .enqueueJob(job)
+                        .then(function(response) {
+                            console.dir(response);
+                            logger.success('Job sucessfully enqueued!', null);
+                        });
                 }, function() {
                     // do nothing
                 });

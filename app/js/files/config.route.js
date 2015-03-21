@@ -37,6 +37,17 @@
                             authorizedRoles: [USER_ROLES.admin, USER_ROLES.user]
                         }
                     }
+                },
+                {
+                    name: 'view-entryId',
+                    config: {
+                        url: '/files/view/:entryId',
+                        templateUrl: 'app/files/view.html',
+                        title: 'View',
+                        settings: {
+                            authorizedRoles: [USER_ROLES.admin, USER_ROLES.user]
+                        }
+                    }
                 }
             ];
         }
