@@ -7,6 +7,15 @@
         <nav class="navbar">
             <div class="container-fluid">
                 <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <ol class="breadcrumb" style="background: none;">
+                            <li ng-repeat="entry in vm.breadcrumbEntries.slice().reverse()">
+                                <a ui-sref="files-entryId({ entryId: '{{entry.get('entryId')}}' })">
+                                    {{entry.get('title')}}
+                                </a>
+                            </li>
+                        </ol>
+                    </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>

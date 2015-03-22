@@ -11,6 +11,7 @@
         /*jshint validthis: true */
         var vm = this;
         vm.entryId = $stateParams.entryId;
+        vm.entry = file;
 
         this.config = {
             preload: "none",
