@@ -5,10 +5,10 @@
         .module('ccfrontend.files')
         .run(routeConfig);
 
-    routeConfig.$inject = ['routehelper', 'USER_ROLES'];
+    routeConfig.$inject = ['routehelper', 'USER_ROLES', 'FileService'];
 
     /* @ngInject */
-    function routeConfig(routehelper, USER_ROLES) {
+    function routeConfig(routehelper, USER_ROLES, FileService) {
         routehelper.configureRoutes(getRoutes());
 
         function getRoutes() {
@@ -44,8 +44,14 @@
                         url: '/files/view/:entryId',
                         templateUrl: 'app/files/view.html',
                         title: 'View',
+                        controller: 'View as vm',
                         settings: {
                             authorizedRoles: [USER_ROLES.admin, USER_ROLES.user]
+                        },
+                        resolve: {
+                            file: function($stateParams) {
+                                return FileService.getFile($stateParams.entryId);
+                            }
                         }
                     }
                 }

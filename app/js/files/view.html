@@ -1,6 +1,5 @@
 <div
     class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 files"
-    data-ng-controller="View as vm"
     >
     <div class="row actions">
         <nav class="navbar">
@@ -24,7 +23,7 @@
     </div>
 
     <div class="row">
-        <videogular vg-theme="vm.config.theme" vg-player-ready="vm.onPlayerReady($API)" vg-complete="vm.onCompleteVideo()">
+        <videogular vg-theme="vm.config.theme">
             <vg-media vg-src="vm.config.sources"
                       vg-tracks="vm.config.tracks">
             </vg-media>
