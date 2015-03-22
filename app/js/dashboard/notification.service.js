@@ -30,8 +30,8 @@
                 .get(config.apiBaseUrl + '/notifications')
                 .success(function (response) {
                     var notifications = [];
-                    for (var i = 0; i < response.length; i++) {
-                        var notificationData = response[i];
+                    for (var i = 0; i < response.notifications.length; i++) {
+                        var notificationData = response.notifications[i];
                         var notification = new NotificationModel(notificationData);
 
                         notifications.push(notification);
