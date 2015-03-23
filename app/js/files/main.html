@@ -48,7 +48,8 @@
                 <i class="fa {{entry.get('icon')}}"></i>
 
                 <a ng-if="entry.get('kind') === 'folder'" ui-sref="files-entryId({ entryId: '{{entry.get('entryId')}}' })" ng-bind="entry.get('title')"></a>
-                <a ng-if="entry.get('kind') === 'file'" ui-sref="view-entryId({ entryId: '{{entry.get('entryId')}}' })" ng-bind="entry.get('title')"></a>
+                <a ng-if="entry.get('kind') === 'file' && (entry.get('mimeType').indexOf('video') === 0 || entry.get('mimeType').indexOf('audio') === 0)" ui-sref="view-entryId({ entryId: '{{entry.get('entryId')}}' })" ng-bind="entry.get('title')"></a>
+                <a ng-if="entry.get('kind') === 'file' && (entry.get('mimeType').indexOf('video') !== 0 && entry.get('mimeType').indexOf('audio') !== 0)" href="{{entry.get('downloadUrl')}}" ng-bind="entry.get('title')"></a>
             </div>
             <div class="col-xs-3 col-sm-3">
                 {{entry.get('modifiedDate')}}
